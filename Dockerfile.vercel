@@ -8,10 +8,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
 
+COPY certs/tidb-ca.pem /etc/ssl/certs/tidb-ca.pem
+
 COPY . /app
-RUN mkdir -p /etc/ssl/certs \
-    && cp /app/certs/tidb-ca.pem /etc/ssl/certs/tidb-ca.pem \
-    && rm -rf /app/certs
+RUN rm -rf /app/certs
 
 ENV DB_SSL_CA=/etc/ssl/certs/tidb-ca.pem
 
