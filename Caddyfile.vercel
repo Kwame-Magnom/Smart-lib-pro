@@ -1,0 +1,8 @@
+:{$PORT:80} {
+    root * /app
+
+    @privateFiles path /config.local* /secure-portal.env* /.env* /.git* /.dockerignore /.gitignore /Dockerfile* /Caddyfile* /composer.* /vercel.json /README* /vendor* /certs* *.sql *.pem *.key /install_backup_task*
+    respond @privateFiles 404
+
+    php_server
+}

@@ -1,0 +1,41 @@
+# Local credentials and environment files
+/config.local.php
+/config.local.*.php
+!/config.local.example.php
+/secure-portal.env*
+**/.env
+**/.env.*
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+!**/.env.example
+
+# JavaScript builds and installed packages
+.vscode/
+**/node_modules/
+**/.next/
+**/.vercel/
+**/out/
+
+# Flutter generated output
+**/.dart_tool/
+**/build/
+**/android/.gradle/
+**/ios/Pods/
+**/local.properties
+
+# Local database exports and application backups
+/backups/
+/backup/
+*.sql
+*.sql.gz
+
+# Private keys; the TiDB CA certificate is public and required by the container build.
+*.pem
+!/certs/tidb-ca.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
