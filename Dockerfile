@@ -1,0 +1,19 @@
+FROM dunglas/frankenphp:1-php8.3
+
+WORKDIR /app
+
+RUN install-php-extensions mysqli redis
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+COPY certs/tidb-ca.pem /etc/ssl/certs/tidb-ca.pem
+
+COPY . /app
+RUN rm -rf /app/certs
+
+ENV DB_SSL_CA=/etc/ssl/certs/tidb-ca.pem
+
+COPY Caddyfile.vercel /etc/caddy/Caddyfile
+RUN cp /etc/caddy/Caddyfile /etc/frankenphp/Caddyfile 2>/dev/null || true

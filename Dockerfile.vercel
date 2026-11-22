@@ -16,3 +16,4 @@ RUN rm -rf /app/certs
 ENV DB_SSL_CA=/etc/ssl/certs/tidb-ca.pem
 
 COPY Caddyfile.vercel /etc/caddy/Caddyfile
+RUN cp /etc/caddy/Caddyfile /etc/frankenphp/Caddyfile 2>/dev/null || true
