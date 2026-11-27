@@ -20,10 +20,13 @@ function db(): mysqli
         if (!is_file(DB_SSL_CA) || !is_readable(DB_SSL_CA)) {
             throw new RuntimeException('DB_SSL_CA must point to a readable CA certificate file.');
         }
-        if (!defined('MYSQLI_OPT_SSL_VERIFY_SERVER_CERT') || !defined('MYSQLI_CLIENT_SSL')) {
+        if (!defined('MYSQLI_CLIENT_SSL')) {
             throw new RuntimeException('The PHP MySQL driver does not support verified TLS connections.');
         }
-        if (!$connection->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true)) {
+        // mysqlnd verifies the peer and hostname by default when a CA file is configured.
+        if (stripos(mysqli_get_client_info(), 'mysqlnd') !== 0
+            && (!defined('MYSQLI_OPT_SSL_VERIFY_SERVER_CERT')
+                || !$connection->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, 1))) {
             throw new RuntimeException('This PHP MySQL driver cannot verify the database certificate. Upgrade to a PHP build with verified TLS support.');
         }
         $connection->ssl_set(null, null, DB_SSL_CA, null, null);
